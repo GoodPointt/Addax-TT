@@ -7,6 +7,8 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import ChosenMonth from './modules/Calendar/ChosenMonth';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   const navigate = useNavigate();
@@ -19,12 +21,12 @@ function App() {
   }, []);
 
   return (
-    <>
+    <DndProvider backend={HTML5Backend}>
       <Routes>
         <Route path="/" element={<ChosenMonth />} />
         <Route path="/:currentMonth" element={<ChosenMonth />} />
       </Routes>
-    </>
+    </DndProvider>
   );
 }
 

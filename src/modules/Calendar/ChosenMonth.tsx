@@ -39,7 +39,7 @@ const ChosenMonth = () => {
         currentDate={currentDate}
       />
 
-      <DatePaginator currentDate={currentDate} isDateShown={false} />
+      <DatePaginator currentDate={currentDate} />
       <CalendarDays day={currentDate} />
     </StyledCalendarWrapper>
   );

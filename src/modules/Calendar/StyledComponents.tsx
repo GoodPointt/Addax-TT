@@ -52,15 +52,15 @@ export const StyledCalendarDay = styled.li`
     box-shadow: 0px 0px 30px -16px rgba(95, 100, 125, 1);
   }
 
-  &:nth-child(7n) {
+  &:nth-of-type(7n) {
     border-left: 1px solid rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
-  &:nth-child(7n + 1) {
+  &:nth-of-type(7n + 1) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
 
-  &:not(:nth-child(7n)):not(:nth-child(7n + 1)) {
+  &:not(:nth-of-type(7n)):not(:nth-of-type(7n + 1)) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
@@ -92,7 +92,7 @@ export const StyledTaskItem = styled.li`
   max-width: 300px;
   margin-bottom: 5px;
   white-space: pre-wrap;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
   display: block;

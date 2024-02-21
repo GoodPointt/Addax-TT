@@ -6,6 +6,7 @@ export interface ITask {
 }
 
 export interface IDateObject {
+  id: string;
   currentMonth: boolean;
   date: string;
   month: number;

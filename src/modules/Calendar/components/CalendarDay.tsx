@@ -1,15 +1,22 @@
 import { css } from '@emotion/react';
-import {
-  StyledCalendarDay,
-  StyledTaskItem,
-  StyledTasksList,
-} from '../StyledComponents';
+import { StyledCalendarDay, StyledTasksList } from '../StyledComponents';
+import { useDrop } from 'react-dnd';
+
 import { IDateObject, ITask } from '../../../interfaces/calendar.interfaces';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
+import TaskCardItem from './TaskCardItem';
 
-const CalendarDay = ({ day }: { day: IDateObject }) => {
-  const [dayTasks, setDayTasks] = useState<ITask[]>(day.tasks);
+type TSetTasks = React.Dispatch<React.SetStateAction<ITask[]>>;
+
+interface ICalendarDayProps {
+  day: IDateObject;
+  setTasks: TSetTasks;
+  tasks: ITask[];
+}
+
+const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
+  const [dayTasks] = useState<ITask[]>(day.tasks);
   const [isDayHovered, setIsDayHovered] = useState<boolean>(false);
   const [isAddingTask, setIsAddingTask] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<string>('');
@@ -23,12 +30,9 @@ const CalendarDay = ({ day }: { day: IDateObject }) => {
   const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log('Task Title:', taskTitle);
-    console.log('Priority:', priority);
-
-    setDayTasks((prev) => [
+    setTasks((prevTasks) => [
+      ...prevTasks,
       { id: nanoid(), title: taskTitle, priority, date: day.date },
-      ...prev,
     ]);
 
     setTaskTitle('');
@@ -40,8 +44,8 @@ const CalendarDay = ({ day }: { day: IDateObject }) => {
   const handleEditTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setDayTasks((prev) =>
-      prev.map((task) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
         if (editingTask === task.id) {
           return { ...task, title: taskTitle, priority };
         } else return task;
@@ -53,14 +57,37 @@ const CalendarDay = ({ day }: { day: IDateObject }) => {
     setEditingTask('');
   };
 
-  const handleDeleteTask = (taskId: string) => {
-    setDayTasks((prev) => prev.filter((task) => taskId !== task.id));
+  const onPressEditTask = (taskId: string) => {
+    setEditingTask(taskId);
+    setTaskTitle(dayTasks.filter((item) => item.id === taskId)[0].title);
+    setPriority(dayTasks.filter((item) => item.id === taskId)[0].priority);
   };
 
-  console.log(taskTitle);
+  const handleDeleteTask = (taskId: string) => {
+    setTasks((prev) => prev.filter((task) => taskId !== task.id));
+  };
+
+  const addTaskToDay = (task: ITask) => {
+    const newTask = { ...task, date: day.date };
+
+    const newTasks = tasks.map((t) => {
+      if (t.id !== task.id) return t;
+      return newTask;
+    });
+    setTasks(newTasks);
+  };
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: 'task',
+    drop: ({ task }: { task: ITask }) => addTaskToDay(task),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
 
   return (
     <StyledCalendarDay
+      ref={drop}
       onMouseOver={() => {
         setIsDayHovered(true);
       }}
@@ -69,6 +96,7 @@ const CalendarDay = ({ day }: { day: IDateObject }) => {
       }}
       css={css`
         color: ${day.currentMonth ? '#fff' : 'gray'};
+        background-color: ${isOver && 'green'};
       `}
     >
       <span
@@ -133,46 +161,12 @@ const CalendarDay = ({ day }: { day: IDateObject }) => {
         dayTasks.length > 0 && (
           <StyledTasksList>
             {dayTasks.map((task) => (
-              <StyledTaskItem
+              <TaskCardItem
                 key={task.id}
-                css={css`
-                  border-left: 5px solid
-                    ${(task.priority === 'high' && 'crimson') ||
-                    (task.priority === 'medium' && 'orange') ||
-                    (task.priority === 'low' && 'green')};
-                `}
-              >
-                <p>{task.title}</p>
-                <div
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                  `}
-                >
-                  <button
-                    aria-label="edit task"
-                    onClick={() => {
-                      setEditingTask(task.id);
-                      console.log('1111', dayTasks);
-                      console.log('1111', dayTasks);
-                      setTaskTitle(
-                        dayTasks.filter((a) => a.id === task.id)[0].title
-                      );
-                    }}
-                  >
-                    📃
-                  </button>
-                  <button
-                    aria-label="delete task"
-                    onClick={() => handleDeleteTask(task.id)}
-                  >
-                    ❌
-                  </button>
-                </div>
-              </StyledTaskItem>
+                task={task}
+                onPressEditTask={onPressEditTask}
+                handleDeleteTask={handleDeleteTask}
+              />
             ))}
           </StyledTasksList>
         )

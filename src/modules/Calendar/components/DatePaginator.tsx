@@ -4,7 +4,6 @@ import { css } from '@emotion/react';
 
 interface IDatePaginatorProps {
   currentDate: Date;
-  isDateShown: boolean;
 }
 
 const DatePaginator: React.FC<IDatePaginatorProps> = ({ currentDate }) => {

@@ -4,16 +4,18 @@ const CalendarToolbar = () => {
   const [, setSearchParams] = useSearchParams();
 
   return (
-    <label>
-      🔎
-      <input
-        placeholder="Search tasks by name"
-        type="search"
-        onChange={(e) => {
-          setSearchParams({ search: e.target.value });
-        }}
-      />
-    </label>
+    <div>
+      <label htmlFor="search">
+        🔎
+        <input
+          placeholder="Search tasks by name"
+          type="search"
+          onChange={(e) => {
+            setSearchParams({ search: e.target.value });
+          }}
+        />
+      </label>
+    </div>
   );
 };
 

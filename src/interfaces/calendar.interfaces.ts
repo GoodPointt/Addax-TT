@@ -1,8 +1,14 @@
+export interface ILabel {
+  title: string;
+  color: string;
+}
+
 export interface ITask {
   id: string;
   title: string;
   date: string;
   priority: 'high' | 'medium' | 'low' | string;
+  labels: ILabel[];
 }
 
 export interface IDateObject {

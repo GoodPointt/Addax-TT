@@ -14,22 +14,23 @@ const ChosenMonth = () => {
   const navigate = useNavigate();
   const { currentMonth } = useParams();
 
-  // useEffect(() => {
-  //   dispatch(fetchTasks(currentMonth));
-  // }, [dispatch, currentDate, currentMonth]);
+  const updateURL = (date: Date) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    navigate(`/${date.toISOString().slice(0, 7)}?${searchParams.toString()}`);
+  };
 
   const nextMonth = () => {
     const nextMonthDate = new Date(currentDate);
     nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
     setCurrentDate(nextMonthDate);
-    navigate(`/${new Date(nextMonthDate).toISOString().slice(0, 7)}`);
+    updateURL(nextMonthDate);
   };
 
   const prevMonth = () => {
-    const currentDateCopy = new Date(currentDate);
-    currentDateCopy.setMonth(currentDateCopy.getMonth() - 1);
-    setCurrentDate(currentDateCopy);
-    navigate(`/${new Date(currentDateCopy).toISOString().slice(0, 7)}`);
+    const prevMonthDate = new Date(currentDate);
+    prevMonthDate.setMonth(prevMonthDate.getMonth() - 1);
+    setCurrentDate(prevMonthDate);
+    updateURL(prevMonthDate);
   };
 
   return (

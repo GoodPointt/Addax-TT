@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+### Middle(Strong Junior) JavaScript(TypeScript) Full-stack developer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Deadline: Three days from the moment of receiving the message with the link
 
-Currently, two official plugins are available:
+#### Task Description: Create a calendar grid with the ability to create and organize tasks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##### The calendar must be implemented without using calendar libraries.
 
-## Expanding the ESLint configuration
+## Required Functionality:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Create and edit tasks inside calendar cells (days) in an inline manner.
+- Reassign tasks between days (calendar cells) using drag and drop.
+- Reorder task in one cell using drag and drop.
+- Filter tasks in the calendar by a searching text.
+- Create and edit labels for tasks (color, text).
+- Assign multiple labels to the task.
+- Filter tasks by labels.
+- Import and export calendar to file (json or other formats).
+- Ability to download the calendar as an image.
+- Show worldwide holidays for each day in the calendar.
+- Holiday name must be fixed at of the cell and must not participate in re-ordering.
+  API:
+- https://date.nager.at/swagger/index.html

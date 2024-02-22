@@ -91,8 +91,9 @@ const TaskCardItem: React.FC<ITaskCardItemProps> = ({
             justify-content: space-around;
           `}
         >
-          {task.labels.map((l) => (
+          {task.labels.map((l, idx) => (
             <div
+              key={idx}
               css={css`
                 height: 2px;
                 width: calc(100% / ${task.labels.length});
@@ -120,6 +121,7 @@ const TaskCardItem: React.FC<ITaskCardItemProps> = ({
           onClick={() => {
             onPressEditTask(task.id);
           }}
+          type="button"
         >
           📃
         </button>
@@ -129,6 +131,7 @@ const TaskCardItem: React.FC<ITaskCardItemProps> = ({
           `}
           aria-label="delete task"
           onClick={() => handleDeleteTask(task.id)}
+          type="button"
         >
           ❌
         </button>

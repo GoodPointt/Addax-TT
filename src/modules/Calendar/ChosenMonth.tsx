@@ -49,7 +49,7 @@ const ChosenMonth = () => {
           prevDate={prevMonth}
           currentDate={currentDate}
         />
-        <CalendarToolbar tasks={tasks} />
+        <CalendarToolbar tasks={tasks} setTasks={setTasks} />
       </div>
 
       <DatePaginator currentDate={currentDate} />

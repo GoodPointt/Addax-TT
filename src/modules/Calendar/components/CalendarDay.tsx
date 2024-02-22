@@ -250,6 +250,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
                   >
                     <p>{label.title}</p>
                     <button
+                      type="button"
                       onClick={() => {
                         setTaskLabels((prev) =>
                           prev.filter((l) => l.title !== label.title)
@@ -342,6 +343,19 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
           >
             {day.number}
           </span>
+          {day.holidays.length > 0 && (
+            <p
+              css={css`
+                position: absolute;
+                top: 1px;
+                left: 1px;
+                font-style: italic;
+                color: #dc7b7bb6;
+              `}
+            >
+              🎉{day.holidays[0].name}
+            </p>
+          )}
           {dayTasks.length > 0 && (
             <StyledTasksList>
               {dayTasks.map((task, index) => (

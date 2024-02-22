@@ -20,6 +20,19 @@ export interface IDateObject {
   selected: boolean;
   year: number;
   tasks: ITask[];
+  holidays: IHoliday[];
+}
+
+export interface IHoliday {
+  counties: null | string[];
+  countryCode: string;
+  date: string;
+  fixed: boolean;
+  global: boolean;
+  launchYear: null | number;
+  localName: string;
+  name: string;
+  types: string[];
 }
 
 export type TSetTasks = React.Dispatch<React.SetStateAction<ITask[]>>;

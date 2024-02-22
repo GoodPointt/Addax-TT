@@ -76,13 +76,32 @@ const TaskCardItem: React.FC<ITaskCardItemProps> = ({
       ref={ref}
       css={css`
         background-color: ${isOver && '#4e4e4e49'};
-        padding: 11px 0;
+        padding: 0;
+        height: 42px;
         border-left: 5px solid
           ${(task.priority === 'high' && 'crimson') ||
           (task.priority === 'medium' && 'orange') ||
           (task.priority === 'low' && 'green')};
       `}
     >
+      {task.labels.length > 0 && (
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-around;
+          `}
+        >
+          {task.labels.map((l) => (
+            <div
+              css={css`
+                height: 2px;
+                width: calc(100% / ${task.labels.length});
+                background-color: ${l.color};
+              `}
+            ></div>
+          ))}
+        </div>
+      )}
       <p>{task.title}</p>
       <div
         css={css`

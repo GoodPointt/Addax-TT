@@ -97,6 +97,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
 
   return (
     <StyledCalendarDay
+      key={tasks.length}
       ref={drop}
       onMouseOver={() => {
         setIsDayHovered(true);

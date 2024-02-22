@@ -5,6 +5,8 @@ import DatePaginator from './components/DatePaginator';
 import CalendarDays from './components/CalendarDays';
 import { StyledCalendarWrapper } from './StyledComponents';
 import PeriodPaginator from './components/PeriodPaginator';
+import { css } from '@emotion/react';
+import CalendarToolbar from './components/CalendarToolbar';
 
 const ChosenMonth = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -33,11 +35,19 @@ const ChosenMonth = () => {
   return (
     <StyledCalendarWrapper>
       {currentMonth}
-      <PeriodPaginator
-        nextDate={nextMonth}
-        prevDate={prevMonth}
-        currentDate={currentDate}
-      />
+      <div
+        css={css`
+          display: flex;
+          justify-content: space-between;
+        `}
+      >
+        <PeriodPaginator
+          nextDate={nextMonth}
+          prevDate={prevMonth}
+          currentDate={currentDate}
+        />
+        <CalendarToolbar />
+      </div>
 
       <DatePaginator currentDate={currentDate} />
       <CalendarDays day={currentDate} />

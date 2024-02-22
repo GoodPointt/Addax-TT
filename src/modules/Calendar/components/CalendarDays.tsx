@@ -3,27 +3,43 @@ import { useEffect, useState } from 'react';
 import { IDateObject, ITask } from '../../../interfaces/calendar.interfaces';
 import { StyledCalendarDaysWrapper } from '../StyledComponents';
 import CalendarDay from './CalendarDay';
+import { useSearchParams } from 'react-router-dom';
 
 interface ICalendarDaysProps {
   day: Date;
 }
 
 const CalendarDays: React.FC<ICalendarDaysProps> = ({ day }) => {
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSerchQuery] = useState<string>('');
   const [days, setDays] = useState<IDateObject[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<ITask[]>([]);
   const [hasCheked, setHasCheked] = useState<boolean>(false);
 
   useEffect(() => {
-    hasCheked && localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [hasCheked, tasks]);
+    setSerchQuery(searchParams.get('search') ?? '');
+  }, [searchParams]);
 
   useEffect(() => {
-    const tasksData = localStorage.getItem('tasks');
+    if (!searchQuery && hasCheked)
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [hasCheked, searchQuery, tasks]);
 
-    setTasks(tasksData ? JSON.parse(tasksData) : []);
+  useEffect(() => {
+    if (!searchQuery) {
+      const tasksData = localStorage.getItem('tasks');
+      setFilteredTasks([]);
+      setTasks(tasksData ? JSON.parse(tasksData) : []);
 
-    setHasCheked(true);
-  }, []);
+      setHasCheked(true);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (!searchQuery) return;
+    setFilteredTasks(tasks.filter((task) => task.title.includes(searchQuery)));
+  }, [searchQuery, tasks]);
 
   useEffect(() => {
     const firstDayOfMonth = new Date(day.getFullYear(), day.getMonth(), 1);
@@ -49,19 +65,27 @@ const CalendarDays: React.FC<ICalendarDaysProps> = ({ day }) => {
         year: startDate.getFullYear(),
         tasks: [],
       };
-      if (tasks?.length > 0)
+
+      if (filteredTasks?.length > 0) {
+        filteredTasks.map((task: ITask) => {
+          if (task.date === calendarDay.date) {
+            calendarDay.tasks.push(task);
+          }
+        });
+      } else if (tasks?.length > 0 && !searchQuery) {
         tasks.map((task: ITask) => {
           if (task.date === calendarDay.date) {
             calendarDay.tasks.push(task);
           }
         });
+      }
       currentDays.push(calendarDay);
 
       startDate.setDate(startDate.getDate() + 1);
     }
 
     setDays(currentDays);
-  }, [day, tasks]);
+  }, [day, filteredTasks, searchQuery, tasks]);
 
   return (
     <>
@@ -71,7 +95,7 @@ const CalendarDays: React.FC<ICalendarDaysProps> = ({ day }) => {
             key={day.id}
             day={day}
             setTasks={setTasks}
-            tasks={tasks}
+            tasks={filteredTasks.length > 0 ? filteredTasks : tasks}
           />
         ))}
       </StyledCalendarDaysWrapper>

@@ -21,3 +21,5 @@ export interface IDateObject {
   year: number;
   tasks: ITask[];
 }
+
+export type TSetTasks = React.Dispatch<React.SetStateAction<ITask[]>>;

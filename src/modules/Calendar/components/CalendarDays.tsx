@@ -1,40 +1,61 @@
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
-import { IDateObject, ITask } from '../../../interfaces/calendar.interfaces';
+import {
+  IDateObject,
+  ITask,
+  TSetTasks,
+} from '../../../interfaces/calendar.interfaces';
 import { StyledCalendarDaysWrapper } from '../StyledComponents';
 import CalendarDay from './CalendarDay';
 import { useSearchParams } from 'react-router-dom';
 
 interface ICalendarDaysProps {
   day: Date;
+  tasks: ITask[];
+  setTasks: TSetTasks;
 }
 
-const CalendarDays: React.FC<ICalendarDaysProps> = ({ day }) => {
+const CalendarDays: React.FC<ICalendarDaysProps> = ({
+  day,
+  tasks,
+  setTasks,
+}) => {
   const [searchParams] = useSearchParams();
-  const [searchQuery, setSerchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [labelQuery, setLabelQuery] = useState<string>('');
   const [days, setDays] = useState<IDateObject[]>([]);
-  const [tasks, setTasks] = useState<ITask[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<ITask[]>([]);
   const [hasCheked, setHasCheked] = useState<boolean>(false);
 
   useEffect(() => {
-    setSerchQuery(searchParams.get('search') ?? '');
+    setSearchQuery(searchParams.get('search') ?? '');
+    setLabelQuery(searchParams.get('label') ?? '');
   }, [searchParams]);
 
   useEffect(() => {
-    if (!searchQuery && hasCheked)
+    if (!searchQuery && !labelQuery && hasCheked)
       localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [hasCheked, searchQuery, tasks]);
+  }, [hasCheked, labelQuery, searchQuery, tasks]);
 
   useEffect(() => {
-    if (!searchQuery) {
+    if (!searchQuery || labelQuery === 'All') {
       const tasksData = localStorage.getItem('tasks');
       setFilteredTasks([]);
       setTasks(tasksData ? JSON.parse(tasksData) : []);
 
       setHasCheked(true);
     }
-  }, [searchQuery]);
+  }, [labelQuery, searchQuery, setTasks]);
+
+  useEffect(() => {
+    if (!labelQuery) return;
+
+    const filteredTasksByLabel = tasks.filter((task) => {
+      return task.labels.some((label) => label.title === labelQuery);
+    });
+
+    setFilteredTasks(filteredTasksByLabel);
+  }, [labelQuery, tasks]);
 
   useEffect(() => {
     if (!searchQuery) return;

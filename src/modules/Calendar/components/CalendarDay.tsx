@@ -6,12 +6,11 @@ import {
   IDateObject,
   ILabel,
   ITask,
+  TSetTasks,
 } from '../../../interfaces/calendar.interfaces';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import TaskCardItem from './TaskCardItem';
-
-type TSetTasks = React.Dispatch<React.SetStateAction<ITask[]>>;
 
 interface ICalendarDayProps {
   day: IDateObject;

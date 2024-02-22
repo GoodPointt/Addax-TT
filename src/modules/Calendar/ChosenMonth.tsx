@@ -7,9 +7,11 @@ import { StyledCalendarWrapper } from './StyledComponents';
 import PeriodPaginator from './components/PeriodPaginator';
 import { css } from '@emotion/react';
 import CalendarToolbar from './components/CalendarToolbar';
+import { ITask } from '../../interfaces/calendar.interfaces';
 
 const ChosenMonth = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [tasks, setTasks] = useState<ITask[]>([]);
 
   const navigate = useNavigate();
   const { currentMonth } = useParams();
@@ -47,11 +49,11 @@ const ChosenMonth = () => {
           prevDate={prevMonth}
           currentDate={currentDate}
         />
-        <CalendarToolbar />
+        <CalendarToolbar tasks={tasks} />
       </div>
 
       <DatePaginator currentDate={currentDate} />
-      <CalendarDays day={currentDate} />
+      <CalendarDays day={currentDate} tasks={tasks} setTasks={setTasks} />
     </StyledCalendarWrapper>
   );
 };

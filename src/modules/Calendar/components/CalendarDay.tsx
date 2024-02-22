@@ -69,7 +69,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
 
   const moveTaskOnDay = (dragIndex: number, hoverIndex: number) => {
     const task = dayTasks[dragIndex];
-    const newDayTasks = dayTasks.filter((i, idx) => idx !== dragIndex);
+    const newDayTasks = dayTasks.filter((_, idx) => idx !== dragIndex);
     newDayTasks.splice(hoverIndex, 0, task);
     setTasks((prev) => [
       ...newDayTasks,

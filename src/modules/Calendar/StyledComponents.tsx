@@ -68,7 +68,7 @@ export const StyledCalendarDay = styled.li`
 
 export const StyledTasksList = styled.ul`
   overflow-y: scroll;
-  max-height: 130px;
+  max-height: 110px;
   padding: 0;
 
   &::-webkit-scrollbar {

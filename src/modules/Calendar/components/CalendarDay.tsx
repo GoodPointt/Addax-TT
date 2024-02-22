@@ -67,6 +67,16 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
     setTasks((prev) => prev.filter((task) => taskId !== task.id));
   };
 
+  const moveTaskOnDay = (dragIndex: number, hoverIndex: number) => {
+    const task = dayTasks[dragIndex];
+    const newDayTasks = dayTasks.filter((i, idx) => idx !== dragIndex);
+    newDayTasks.splice(hoverIndex, 0, task);
+    setTasks((prev) => [
+      ...newDayTasks,
+      ...prev.filter((task) => task.date !== day.date),
+    ]);
+  };
+
   const addTaskToDay = (task: ITask) => {
     const newTask = { ...task, date: day.date };
 
@@ -96,7 +106,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
       }}
       css={css`
         color: ${day.currentMonth ? '#fff' : 'gray'};
-        background-color: ${isOver && 'green'};
+        background-color: ${isOver && '#4a4949'};
       `}
     >
       <span
@@ -160,10 +170,12 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
       ) : (
         dayTasks.length > 0 && (
           <StyledTasksList>
-            {dayTasks.map((task) => (
+            {dayTasks.map((task, index) => (
               <TaskCardItem
                 key={task.id}
+                index={index}
                 task={task}
+                moveTaskOnDay={moveTaskOnDay}
                 onPressEditTask={onPressEditTask}
                 handleDeleteTask={handleDeleteTask}
               />

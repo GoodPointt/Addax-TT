@@ -8,24 +8,22 @@ interface ICalendarDaysProps {
   day: Date;
 }
 
-const mockTasks: ITask[] = [
-  {
-    id: nanoid(),
-    title: 'tes',
-    date: new Date().toISOString().slice(0, 10),
-    priority: 'high',
-  },
-  {
-    id: nanoid(),
-    title: 'test2',
-    date: new Date().toISOString().slice(0, 10),
-    priority: 'medium',
-  },
-];
-
 const CalendarDays: React.FC<ICalendarDaysProps> = ({ day }) => {
   const [days, setDays] = useState<IDateObject[]>([]);
-  const [tasks, setTasks] = useState<ITask[]>(mockTasks);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [hasCheked, setHasCheked] = useState<boolean>(false);
+
+  useEffect(() => {
+    hasCheked && localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [hasCheked, tasks]);
+
+  useEffect(() => {
+    const tasksData = localStorage.getItem('tasks');
+
+    setTasks(tasksData ? JSON.parse(tasksData) : []);
+
+    setHasCheked(true);
+  }, []);
 
   useEffect(() => {
     const firstDayOfMonth = new Date(day.getFullYear(), day.getMonth(), 1);

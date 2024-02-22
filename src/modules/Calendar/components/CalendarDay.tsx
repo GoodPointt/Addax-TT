@@ -82,7 +82,6 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
         setIsDayHovered(false);
       }}
       css={css`
-        font-size: 20px;
         color: ${day.currentMonth ? '#fff' : 'gray'};
         background-color: ${isOver && '#4a4949'};
       `}
@@ -106,6 +105,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, setTasks, tasks }) => {
         <>
           <span
             css={css`
+              font-size: 20px;
               font-weight: ${day.selected && day.month === today && 900};
               color: ${day.selected && day.month === today && 'yellow'};
             `}
